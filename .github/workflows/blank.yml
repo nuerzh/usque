@@ -66,16 +66,18 @@ jobs:
             echo "::error::changes.tar.gz not found in the current directory."
             exit 1
           }
-          backup="$RUNNER_TEMP/changes.tar.gz"
-          cp changes.tar.gz "$backup"
+          # Keep the archive on a relative path: on Windows runners $RUNNER_TEMP
+          # contains a drive letter, which GNU tar reads as "[user@]host:file".
+          cp changes.tar.gz changes.local.tar.gz
 
           git remote add upstream "https://github.com/$UPSTREAM_REPOSITORY.git"
           git fetch --no-tags --depth 1 \
             upstream "+refs/heads/$UPSTREAM_REF:refs/remotes/upstream/$UPSTREAM_REF"
           git reset --hard "refs/remotes/upstream/$UPSTREAM_REF"
 
-          tar -tzf "$backup" >/dev/null
-          tar --no-same-owner -xzf "$backup" -C .
+          tar -tzf changes.local.tar.gz >/dev/null
+          tar --no-same-owner -xzf changes.local.tar.gz -C .
+          rm -f changes.local.tar.gz
 
       - name: Install pinned .NET SDK
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
@@ -191,16 +193,18 @@ jobs:
             echo "::error::changes.tar.gz not found in the current directory."
             exit 1
           }
-          backup="$RUNNER_TEMP/changes.tar.gz"
-          cp changes.tar.gz "$backup"
+          # Keep the archive on a relative path: on Windows runners $RUNNER_TEMP
+          # contains a drive letter, which GNU tar reads as "[user@]host:file".
+          cp changes.tar.gz changes.local.tar.gz
 
           git remote add upstream "https://github.com/$UPSTREAM_REPOSITORY.git"
           git fetch --no-tags --depth 1 \
             upstream "+refs/heads/$UPSTREAM_REF:refs/remotes/upstream/$UPSTREAM_REF"
           git reset --hard "refs/remotes/upstream/$UPSTREAM_REF"
 
-          tar -tzf "$backup" >/dev/null
-          tar --no-same-owner -xzf "$backup" -C .
+          tar -tzf changes.local.tar.gz >/dev/null
+          tar --no-same-owner -xzf changes.local.tar.gz -C .
+          rm -f changes.local.tar.gz
 
       - name: Install Java
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
