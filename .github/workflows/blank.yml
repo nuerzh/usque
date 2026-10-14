@@ -75,8 +75,8 @@ jobs:
             upstream "+refs/heads/$UPSTREAM_REF:refs/remotes/upstream/$UPSTREAM_REF"
           git reset --hard "refs/remotes/upstream/$UPSTREAM_REF"
 
-          tar -tzf changes.local.tar.gz >/dev/null
-          tar --no-same-owner -xzf changes.local.tar.gz -C .
+          # tar -tzf changes.local.tar.gz >/dev/null
+          # tar --no-same-owner -xzf changes.local.tar.gz -C .
           rm -f changes.local.tar.gz
 
       - name: Install pinned .NET SDK
